@@ -7,14 +7,24 @@ const totalScoreElement = document.getElementById("total-score");
 const scoreHistory = document.getElementById("score-history");
 const rollDiceBtn = document.getElementById("roll-dice-btn");
 const keepScoreBtn = document.getElementById("keep-score-btn");
-const rulesBtn = document.getElementById("rules-btn");
 const rulesContainer = document.querySelector(".rules-container");
-let rolls = 0;
-let score = 0;
-let round = 1;
-let isModalShowing = false;
+const rulesBtn = document.getElementById("rules-btn");
+
 let diceValuesArr = [];
+let isModalShowing = false;
+let score = 0;
+let round = 1; 
+let rolls = 0; 
+  
 
 rulesBtn.addEventListener("click", () => {
-  rulesContainer.classList.toggle("hide");
+  isModalShowing = !isModalShowing;
+
+  if (isModalShowing) {
+    rulesBtn.textContent = "Hide rules";
+    rulesContainer.style.display = "block";
+  } else {
+    rulesBtn.textContent = "Show rules";
+    rulesContainer.style.display = "none";
+  }
 });
