@@ -100,6 +100,31 @@ const detectFullHouse = (arr) => {
   updateRadioOption(5, 0);
 };
 
+const checkForStraights = (arr) => {
+  const counts = {};
+  const arrays1 = [];
+  arr.sort((a, b) => a - b);
+  for (let i = 0; i < 5; i++ ) {
+    arrays1.push(arr[i + 1] - arr[i])
+  }
+  const slicedArr = arrays1.slice(0, 4).sort((a, b) => a - b)
+
+  for (const item of slicedArr) {
+    counts[item] = counts[item] ? counts[item] + 1 : 1
+  }
+
+  if (counts[1] === 3) {
+    updateRadioOption(3, 30)
+  } 
+  
+  if (counts[1] === 4) {
+    updateRadioOption(3, 30)
+    updateRadioOption(4, 40)
+  } 
+
+  updateRadioOption(5, 0);
+}
+
 const resetRadioOptions = () => {
   scoreInputs.forEach((input) => {
     input.disabled = true;
