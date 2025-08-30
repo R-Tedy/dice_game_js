@@ -47,6 +47,7 @@ const updateScore = (selectedValue, achieved) => {
   scoreHistory.innerHTML += `<li>${achieved} : ${selectedValue}</li>`;
 };
 
+
 const getHighestDuplicates = (arr) => {
   const counts = {};
 
@@ -80,7 +81,6 @@ const getHighestDuplicates = (arr) => {
     updateRadioOption(0, sumOfAllDice);
   }
 
-  updateRadioOption(5, 0);
 };
 
 const detectFullHouse = (arr) => {
@@ -97,33 +97,25 @@ const detectFullHouse = (arr) => {
     updateRadioOption(2, 25);
   }
 
-  updateRadioOption(5, 0);
 };
 
 const checkForStraights = (arr) => {
-  const counts = {};
-  const arrays1 = [];
-  arr.sort((a, b) => a - b);
-  for (let i = 0; i < 5; i++ ) {
-    arrays1.push(arr[i + 1] - arr[i])
+  const sortedNumbersArr = arr.sort((a, b) => a - b);
+  const uniqueNumbersArr = [...new Set(sortedNumbersArr)];
+  const uniqueNumbersStr = uniqueNumbersArr.join("");
+
+  const smallStraightsArr = ["1234", "2345", "3456"];
+  const largeStraightsArr = ["12345", "23456"];
+
+  if (smallStraightsArr.some(straight => uniqueNumbersStr.includes(straight))) {
+    updateRadioOption(3, 30);
   }
-  const slicedArr = arrays1.slice(0, 4).sort((a, b) => a - b)
 
-  for (const item of slicedArr) {
-    counts[item] = counts[item] ? counts[item] + 1 : 1
+  if (largeStraightsArr.includes(uniqueNumbersStr)) {
+    updateRadioOption(4, 40);
   }
 
-  if (counts[1] === 3) {
-    updateRadioOption(3, 30)
-  } 
-  
-  if (counts[1] === 4) {
-    updateRadioOption(3, 30)
-    updateRadioOption(4, 40)
-  } 
-
-  updateRadioOption(5, 0);
-}
+};
 
 const resetRadioOptions = () => {
   scoreInputs.forEach((input) => {
@@ -155,8 +147,6 @@ const resetGame = () => {
   resetRadioOptions();
 };
 
-
-
 rollDiceBtn.addEventListener("click", () => {
   if (rolls === 3) {
     alert("You have made three rolls this round. Please select a score.");
@@ -167,9 +157,12 @@ rollDiceBtn.addEventListener("click", () => {
     updateStats();
     getHighestDuplicates(diceValuesArr);
     detectFullHouse(diceValuesArr);
-
+    checkForStraights(diceValuesArr);
+    updateRadioOption(5, 0);
   }
 });
+
+
 
 rulesBtn.addEventListener("click", () => {
   isModalShowing = !isModalShowing;
